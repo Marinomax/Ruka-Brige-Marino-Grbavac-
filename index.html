@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruka Brige | Odjel Nabave i Skladišta</title>
+    <style>
+        :root {
+            --primary: #4CAF50;
+            --primary-light: rgba(76, 175, 80, 0.1);
+            --secondary: #2C3E50;
+            --light: #F5F5F5;
+            --dark: #333333;
+            --text: #333333;
+            --text-light: #777777;
+            --white: #FFFFFF;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Smooth scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Navigation */
+        nav {
+            background-color: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            transform: translateY(0);
+            transition: var(--transition);
+        }
+
+        nav.hidden {
+            transform: translateY(-100%);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 2rem;
+        }
+
+        .nav-logo {
+            color: var(--primary);
+            font-size: 1.6rem;
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: 1px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .nav-links a:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a:hover:after,
+        .nav-links a.active:after {
+            width: 100%;
+        }
+
+        .nav-links a.active {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            min-height: 700px;
+            background-color: var(--primary);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            transform: translateY(0);
+            opacity: 1;
+            transition: all 0.8s ease-out;
+        }
+
+        .hero-content.hidden {
+            transform: translateY(50px);
+            opacity: 0;
+        }
+
+        .logo {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            letter-spacing: 2px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .logo-main {
+            font-size: 3.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .logo-sub {
+            font-size: 1.8rem;
+            font-weight: 400;
+            letter-spacing: 5px;
+        }
+
+        .slogan {
+            font-size: 1.8rem;
+            margin-bottom: 3rem;
+            font-weight: 300;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--white);
+            color: var(--primary);
+            padding: 15px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            margin: 0 15px;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background-color: var(--secondary);
+            color: var(--white);
+        }
+
+        .btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:hover:before {
+            left: 100%;
+        }
+
+        /* Scroll indicator */
+        .scroll-down {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--white);
+            font-size: 1.5rem;
+            animation: bounce 2s infinite;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: var(--transition);
+        }
+
+        .scroll-down:hover {
+            opacity: 1;
+            animation: none;
+            transform: translateX(-50%) translateY(5px);
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0) translateX(-50%);
+            }
+            40% {
+                transform: translateY(-20px) translateX(-50%);
+            }
+            60% {
+                transform: translateY(-10px) translateX(-50%);
+            }
+        }
+
+        /* Sections */
+        section {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease-out;
+        }
+
+        section.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title h2:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: var(--primary);
+            border-radius: 2px;
+        }
+
+        .section-title p {
+            color: var(--text-light);
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+
+        /* About Section */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background-color: var(--white);
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .feature-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background-color: var(--primary);
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-card:hover:before {
+            height: 10px;
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            transition: var(--transition);
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: scale(1.1);
+        }
+
+        .feature-card h3 {
+            margin-bottom: 1.5rem;
+            color: var(--secondary);
+            font-size: 1.4rem;
+        }
+
+        /* Team Section */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .team-member {
+            background-color: var(--white);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .team-member:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .member-icon {
+            width: 100px;
+            height: 100px;
+            background-color: var(--primary-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: var(--primary);
+            font-size: 2.5rem;
+            font-weight: bold;
+            transition: var(--transition);
+        }
+
+        .team-member:hover .member-icon {
+            transform: scale(1.1);
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .member-name {
+            font-size: 1.4rem;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+            transition: var(--transition);
+        }
+
+        .member-position {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: block;
+            transition: var(--transition);
+        }
+
+        .member-bio {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .team-member:hover .member-name,
+        .team-member:hover .member-position,
+        .team-member:hover .member-bio {
+            color: var(--white);
+        }
+
+        .team-member:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            z-index: -1;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .team-member:hover:after {
+            opacity: 1;
+        }
+
+        /* Tasks Section */
+        .task-card {
+            background-color: var(--white);
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            transition: var(--transition);
+        }
+
+        .task-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .task-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--light);
+        }
+
+        .task-number {
+            font-weight: bold;
+            color: var(--secondary);
+            font-size: 1.2rem;
+        }
+
+        .task-date {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .task-item {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px dashed var(--light);
+            transition: var(--transition);
+        }
+
+        .task-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .task-responsible {
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            font-size: 1.1rem;
+        }
+
+        .task-responsible:before {
+            content: "";
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            margin-right: 10px;
+            transition: var(--transition);
+        }
+
+        .task-item:hover .task-responsible:before {
+            transform: scale(1.3);
+        }
+
+        .task-description {
+            margin-left: 20px;
+            margin-bottom: 1rem;
+            font-size: 1.05rem;
+        }
+
+        .task-subitem {
+            margin-left: 30px;
+            margin-bottom: 0.8rem;
+            color: var(--text-light);
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .task-subitem:before {
+            content: "•";
+            margin-right: 10px;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 1rem;
+            background-color: var(--primary-light);
+            color: var(--primary);
+            transition: var(--transition);
+        }
+
+        .status-completed {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .task-item:hover .status-badge {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .reporting-method {
+            background-color: var(--primary-light);
+            padding: 2rem;
+            border-radius: 12px;
+            margin-top: 3rem;
+            border-left: 5px solid var(--primary);
+            transition: var(--transition);
+        }
+
+        .reporting-method:hover {
+            transform: translateX(10px);
+        }
+
+        .reporting-title {
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+            font-size: 1.1rem;
+        }
+
+        /* Completed Tasks Report */
+        .report-card {
+            background-color: #f5f5f5;
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-top: 3rem;
+            border-left: 5px solid #2e7d32;
+        }
+
+        .report-title {
+            font-size: 1.5rem;
+            color: #2e7d32;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .report-title:before {
+            content: "✓";
+            font-size: 1.8rem;
+        }
+
+        .report-item {
+            margin-bottom: 1.5rem;
+            padding-left: 2rem;
+            position: relative;
+        }
+
+        .report-item:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #2e7d32;
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        /* Contact Section */
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .contact-info {
+            background-color: var(--white);
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .contact-info:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+            transition: var(--transition);
+        }
+
+        .info-item:hover {
+            transform: translateX(10px);
+        }
+
+        .info-icon {
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1.5rem;
+            color: var(--primary);
+            font-size: 1.5rem;
+            transition: var(--transition);
+        }
+
+        .info-item:hover .info-icon {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .info-content h3 {
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+
+        .info-content p, .info-content a {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .info-content a:hover {
+            color: var(--primary);
+        }
+
+        .map-container {
+            margin-top: 2rem;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            height: 300px;
+        }
+
+        .map-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .contact-form {
+            background-color: var(--white);
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .contact-form:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.8rem;
+            font-weight: 500;
+            color: var(--secondary);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid var(--light);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background-color: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .submit-btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .submit-btn:hover {
+            background-color: #3e8e41;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(76, 175, 80, 0.3);
+        }
+
+        .submit-btn:hover:before {
+            left: 100%;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--secondary);
+            color: var(--white);
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            text-align: left;
+        }
+
+        .footer-column h3 {
+            color: var(--white);
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+
+        .footer-column p, .footer-column a {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 1rem;
+            display: block;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-column a:hover {
+            color: var(--white);
+            transform: translateX(5px);
+        }
+
+        .copyright {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Back to top button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            z-index: 999;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            background-color: var(--secondary);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="#home" class="nav-logo">
+                <span>RUKA BRIGE</span>
+            </a>
+            <div class="nav-links">
+                <a href="#home" class="active">Početna</a>
+                <a href="#about">O nama</a>
+                <a href="#team">Tim</a>
+                <a href="#tasks">Zadaci</a>
+                <a href="#contact">Kontakt</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <div class="logo">
+                <div class="logo-main">RUKA BRIGE</div>
+                <div class="logo-sub">TUSMO ZAVAS</div>
+            </div>
+            <p class="slogan">Profesionalno upravljanje zalihama i nabavom materijala</p>
+            <div>
+                <a href="#team" class="btn btn-primary">Naš Tim</a>
+                <a href="#contact" class="btn">Kontaktirajte nas</a>
+            </div>
+        </div>
+        <a href="#about" class="scroll-down">↓</a>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section">
+        <div class="section-title">
+            <h2>O nama</h2>
+            <p>Odjel nabave i skladišta tvrtke Ruka Brige osigurava nesmetano funkcioniranje cijele organizacije kroz profesionalno upravljanje zalihama i nabavom materijala.</p>
+        </div>
+
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">📦</div>
+                <h3>Upravljanje zalihama</h3>
+                <p>Pratimo i optimiziramo zalihe kako bismo osigurali kontinuitet poslovanja uz minimalne troškove skladištenja.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">💼</div>
+                <h3>Nabava materijala</h3>
+                <p>Osiguravamo kvalitetne materijale po najpovoljnijim uvjetima uz poštovanje svih procedura.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Analiza i planiranje</h3>
+                <p>Kontinuirano analiziramo potrebe i planiramo nabave kako bismo anticipirali buduće zahtjeve.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="team" class="section">
+        <div class="section-title">
+            <h2>Naš Tim</h2>
+            <p>Upoznajte našu stručnu ekipu koja svakodnevno radi na osiguravanju kvalitetne nabave i upravljanja zalihama</p>
+        </div>
+
+        <div class="team-grid">
+            <!-- Marino -->
+            <div class="team-member">
+                <div class="member-icon">M</div>
+                <h3 class="member-name">Marino Grbavac</h3>
+                <span class="member-position">Nabava uredskog materijala</span>
+                <p class="member-bio">Odgovoran za praćenje zaliha i iniciranje narudžbi uredskog materijala i goriva.</p>
+            </div>
+
+            <!-- Anto -->
+            <div class="team-member">
+                <div class="member-icon">A</div>
+                <h3 class="member-name">Anto Augustinović</h3>
+                <span class="member-position">Skladištar</span>
+                <p class="member-bio">Odgovoran za primanje, evidenciju i skladištenje materijala.</p>
+            </div>
+
+            <!-- Ivan -->
+            <div class="team-member">
+                <div class="member-icon">I</div>
+                <h3 class="member-name">Ivan Jukić</h3>
+                <span class="member-position">Nabava opreme</span>
+                <p class="member-bio">Odgovoran za prikupljanje ponuda i analizu za kupnju opreme.</p>
+            </div>
+
+            <!-- Jakov -->
+            <div class="team-member">
+                <div class="member-icon">J</div>
+                <h3 class="member-name">Jakov Topalović</h3>
+                <span class="member-position">Analitičar nabave</span>
+                <p class="member-bio">Odgovoran za istraživanje tržišta i pronalaženje optimalnih uvjeta nabave.</p>
+            </div>
+
+            <!-- Danijel -->
+            <div class="team-member">
+                <div class="member-icon">D</div>
+                <h3 class="member-name">Danijel Lovrinović</h3>
+                <span class="member-position">Kontrolor zaliha</span>
+                <p class="member-bio">Odgovoran za provjeru stanja zaliha i identifikaciju nedostataka.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tasks Section -->
+    <section id="tasks" class="section">
+        <div class="section-title">
+            <h2>Trenutni Zadaci</h2>
+            <p>Pregled svih aktivnih zadataka za odjel nabave i skladišta</p>
+        </div>
+
+        <div class="task-card">
+            <div class="task-header">
+                <div class="task-number">Radni nalog br. 1</div>
+                <div class="task-date">Rok izvršenja: 26.03.2025.</div>
+            </div>
+
+            <div class="task-item">
+                <div class="task-responsible">Anto Augustinović</div>
+                <div class="task-description">Skladištiti nabavljeni uredni materijal</div>
+                <div class="task-subitem">Materijal treba pravilno evidentirati u skladišnu evidenciju</div>
+                <div class="task-subitem">Sve artikle rasporediti prema postojećem sistemu skladištenja</div>
+                <span class="status-badge">U TOKU</span>
+            </div>
+
+            <div class="task-item">
+                <div class="task-responsible">Marino Grbavac</div>
+                <div class="task-description">Provjeriti je li potrebno naručiti gorivo za prijevozna sredstva te uredski materijal za ured</div>
+                <div class="task-subitem">Pregledati trenutne zalihe goriva i uredskog materijala</div>
+                <div class="task-subitem">Ako su zalihe ispod minimalnog nivoa, pripremiti prijedlog za narudžbu</div>
+                <span class="status-badge">U TOKU</span>
+            </div>
+
+            <div class="task-item">
+                <div class="task-responsible">Danijel Lovrinović</div>
+                <div class="task-description">Utvrditi stanje zaliha i evidentirati eventualne nedostatke</div>
+                <div class="task-subitem">Izvršiti fizičku provjeru zaliha u skladištu</div>
+                <div class="task-subitem">Sačiniti izvještaj o stanju zaliha i predložiti nabavku ako je potrebno</div>
+                <span class="status-badge">U TOKU</span>
+            </div>
+
+            <div class="task-item">
+                <div class="task-responsible">Jakov Topalović</div>
+                <div class="task-description">Istražiti tržište dobavljača goriva s ciljem pronalaska povoljnijih cijena</div>
+                <div class="task-subitem">Kontaktirati najmanje tri dobavljača i zatražiti ponude</div>
+                <div class="task-subitem">Analizirati ponude i sačiniti usporedni prikaz cijena i uvjeta nabave</div>
+                <span class="status-badge">U TOKU</span>
+            </div>
+
+            <div class="task-item">
+                <div class="task-responsible">Ivan Jukić</div>
+                <div class="task-description">Prikupiti ponude za nabavu printera</div>
+                <div class="task-subitem">Definirati tehničke specifikacije potrebnog printera</div>
+                <div class="task-subitem">Kontaktirati najmanje tri dobavljača i prikupiti ponude</div>
+                <div class="task-subitem">Izraditi usporedni prikaz ponuda i dostaviti ga odgovornoj osobi</div>
+                <span class="status-badge">U TOKU</span>
+            </div>
+
+            <div class="reporting-method">
+                <div class="reporting-title">Način izvještavanja:</div>
+                <p>Svi izvršioci zadataka dužni su do 26.03.2025. dostaviti svoje izvještaje odgovornoj osobi putem e-maila ili internog sustava.</p>
+                <p>Nakon prikupljenih podataka, odgovorna osoba donosi odluku o daljnjim koracima.</p>
+            </div>
+        </div>
+
+        <!-- Completed Tasks Report -->
+        <div class="report-card">
+            <h3 class="report-title">Izvještaj o obavljenim zadacima</h3>
+            <div class="report-item">Skladištenje svih artikala uspješno završeno 20.03.2025. (Anto Augustinović)</div>
+            <div class="report-item">Analiza tržišta dobavljača goriva dovršena sa 5 ponuda (Jakov Topalović)</div>
+            <div class="report-item">Naručen uredski materijal u vrijednosti od 12,450.00 HRK (Marino Grbavac)</div>
+            <div class="report-item">Odabran i naručen novi printer model Xerox C235 po cijeni od 8,999.00 HRK (Ivan Jukić)</div>
+            <div class="report-item">Revizija skladišta pokazala nedostatak u količini od 23 artikla (Danijel Lovrinović)</div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+        <div class="section-title">
+            <h2>Kontaktirajte nas</h2>
+            <p>Imate pitanja ili vam treba pomoć? Javite nam se putem obrasca ili direktno na kontakt podatke.</p>
+        </div>
+
+        <div class="contact-container">
+            <div class="contact-info">
+                <div class="info-item">
+                    <div class="info-icon">📧</div>
+                    <div class="info-content">
+                        <h3>Email</h3>
+                        <a href="mailto:email@rukabrige.com">email@rukabrige.com</a>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-icon">📱</div>
+                    <div class="info-content">
+                        <h3>Telefon</h3>
+                        <a href="tel:+385991234567">+385 99 123 4567</a>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-icon">🏢</div>
+                    <div class="info-content">
+                        <h3>Adresa</h3>
+                        <p>Adresa ulica 123, Grad, Hrvatska</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-icon">🕒</div>
+                    <div class="info-content">
+                        <h3>Radno vrijeme</h3>
+                        <p>Pon - Pet: 08:00 - 16:00</p>
+                        <p>Sub - Ned: Zatvoreno</p>
+                    </div>
+                </div>
+
+                <div class="map-container">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2781.7890741539636!2d15.966758815569535!3d45.795453979106205!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4765d68b5d094979%3A0xda8bfa8459b67560!2sUl.%20Vukovarska%2C%2010000%2C%20Zagreb!5e0!3m2!1sen!2shr!4v1620000000000!5m2!1sen!2shr" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+
+            <div class="contact-form">
+                <form>
+                    <div class="form-group">
+                        <label for="name">Ime i prezime</label>
+                        <input type="text" id="name" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email adresa</label>
+                        <input type="email" id="email" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subject">Predmet</label>
+                        <input type="text" id="subject" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Poruka</label>
+                        <textarea id="message" class="form-control" required></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Pošalji poruku</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Ruka Brige</h3>
+                <p>Vodeći pružatelj usluga u upravljanju zalihama i nabavi materijala.</p>
+            </div>
+
+            <div class="footer-column">
+                <h3>Brzi linkovi</h3>
+                <a href="#home">Početna</a>
+                <a href="#about">O nama</a>
+                <a href="#team">Tim</a>
+                <a href="#tasks">Zadaci</a>
+                <a href="#contact">Kontakt</a>
+            </div>
+
+            <div class="footer-column">
+                <h3>Kontakt</h3>
+                <p>email@rukabrige.com</p>
+                <p>+385 99 123 4567</p>
+                <p>Adresa ulica 123, Grad</p>
+            </div>
+        </div>
+
+        <div class="copyright">
+            <p>&copy; 2023 Ruka Brige. Sva prava pridržana.</p>
+        </div>
+    </footer>
+
+    <!-- Back to top button -->
+    <a href="#home" class="back-to-top">↑</a>
+
+    <script>
+        // Animacija za pojavljivanje sekcija
+        document.addEventListener('DOMContentLoaded', function() {
+            const sections = document.querySelectorAll('.section');
+            const heroContent = document.querySelector('.hero-content');
+            
+            // Prikaži hero sadržaj
+            setTimeout(() => {
+                heroContent.classList.remove('hidden');
+            }, 300);
+
+            // Funkcija za provjeru vidljivosti sekcija
+            function checkVisibility() {
+                sections.forEach(section => {
+                    const sectionTop = section.getBoundingClientRect().top;
+                    const windowHeight = window.innerHeight;
+                    
+                    if (sectionTop < windowHeight - 100) {
+                        section.classList.add('show');
+                    }
+                });
+
+                // Back to top button
+                const backToTop = document.querySelector('.back-to-top');
+                if (window.pageYOffset > 300) {
+                    backToTop.classList.add('show');
+                } else {
+                    backToTop.classList.remove('show');
+                }
+            }
+
+            // Provjeri vidljivost pri učitavanju
+            checkVisibility();
+
+            // Dodaj event listener za scroll
+            window.addEventListener('scroll', checkVisibility);
+
+            // Smooth scroll za navigacijske linkove
+            document.querySelectorAll('nav a').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+
+                    // Ažuriraj aktivni link u navigaciji
+                    document.querySelectorAll('nav a').forEach(link => {
+                        link.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                });
+            });
+
+            // Sakrij navigaciju pri skrolanju dolje, prikaži pri skrolanju gore
+            let lastScroll = 0;
+            window.addEventListener('scroll', function() {
+                const currentScroll = window.pageYOffset;
+                const navbar = document.getElementById('navbar');
+                
+                if (currentScroll <= 0) {
+                    navbar.classList.remove('hidden');
+                    return;
+                }
+                
+                if (currentScroll > lastScroll && !navbar.classList.contains('hidden')) {
+                    // Skrolamo dolje
+                    navbar.classList.add('hidden');
+                } else if (currentScroll < lastScroll && navbar.classList.contains('hidden')) {
+                    // Skrolamo gore
+                    navbar.classList.remove('hidden');
+                }
+                
+                lastScroll = currentScroll;
+            });
+
+            // Dodaj aktivnu klasu na navigacijske linkove prilikom skrolanja
+            window.addEventListener('scroll', function() {
+                const scrollPosition = window.scrollY + 100;
+                
+                document.querySelectorAll('section').forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.offsetHeight;
+                    const sectionId = section.getAttribute('id');
+                    
+                    if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                        document.querySelectorAll('nav a').forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href') === `#${sectionId}`) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
